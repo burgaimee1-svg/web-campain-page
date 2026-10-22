@@ -2,6 +2,8 @@
 
 一个自包含的单页调研工具，用于收集和汇总美国、加拿大天然石材市场的一线业务信息。
 
+在线访问：https://burgaimee1-svg.github.io/web-campain-page/
+
 ## 功能
 
 - 20 道业务调研题，覆盖 6 个市场维度
@@ -12,7 +14,7 @@
 
 ## 使用方式
 
-直接用浏览器打开 `george_north_america_stone_research_v5.html` 即可使用，无需安装依赖或启动服务。
+直接用浏览器打开 `index.html` 或 `george_north_america_stone_research_v5.html` 即可使用，无需安装依赖或启动服务。
 
 也可以在本目录启动任意静态文件服务器，例如：
 
@@ -34,6 +36,7 @@ http://localhost:8000/george_north_america_stone_research_v5.html
 
 ```text
 .
+├── index.html                                      # GitHub Pages 入口
 ├── george_north_america_stone_research_v5.html  # 完整单页应用
 └── README.md                                     # 项目说明
 ```
