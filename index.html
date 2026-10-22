@@ -109,17 +109,17 @@
 <header class="topbar">
  <div class="top-inner">
   <div class="brand"><div class="mark" aria-hidden="true">G</div><div class="wordmark">GEORGE GROUP<small>NATURAL STONE · MARKET RESEARCH</small></div></div>
-  <div class="top-action"><span class="top-chip">独立广告落地页前期业务调研</span><button class="btn dark-outline tiny" id="exportTop" type="button">保存调研结果到桌面</button></div>
+  <div class="top-action"><span class="top-chip">独立广告落地页前期业务调研</span></div>
  </div>
 </header>
 <section class="hero">
  <div class="hero-inner">
-  <div><div class="eyebrow">NORTH AMERICA · SALES INTELLIGENCE</div><h1>美国 & 加拿大天然石材<br>市场业务调研问卷</h1><p>保留原30题中的19题，并新增1道落地页专项填空题 · 6个维度。<b>各产品选项均提供占比下拉菜单（0%—100%），无需录入数量或手动计算百分比。</b> 保存后可获得 CSV、文字摘要、完整问卷版 PDF 和 JSON 备份。</p></div>
-  <div class="hero-status"><div class="status-line"><div><span>已完成题数</span><br><b id="totalCompleted">0</b><span> / 20</span></div><div style="text-align:right"><span>完成进度</span><br><b id="totalPercent">0%</b></div></div><div class="progress-bar" role="progressbar" aria-label="问卷完成进度" aria-valuemin="0" aria-valuemax="20" aria-valuenow="0" id="progressTrack"><div class="progress-fill" id="progressFill"></div></div><div class="status-note" id="saveStatus">内容暂存于当前浏览器，点击保存按钮生成完整汇总。</div></div>
+  <div><div class="eyebrow">NORTH AMERICA · SALES INTELLIGENCE</div><h1>美国 & 加拿大天然石材<br>市场业务调研问卷</h1><p>保留原30题中的19题，并新增1道落地页专项填空题 · 6个维度。<b>各产品选项均提供占比下拉菜单（0%—100%），无需录入数量或手动计算百分比。</b></p></div>
+  <div class="hero-status"><div class="status-line"><div><span>已完成题数</span><br><b id="totalCompleted">0</b><span> / 20</span></div><div style="text-align:right"><span>完成进度</span><br><b id="totalPercent">0%</b></div></div><div class="progress-bar" role="progressbar" aria-label="问卷完成进度" aria-valuemin="0" aria-valuemax="20" aria-valuenow="0" id="progressTrack"><div class="progress-fill" id="progressFill"></div></div><div class="status-note" id="saveStatus">内容自动暂存于当前浏览器，仅保存在本机。</div></div>
  </div>
 </section>
 <div class="layout">
- <aside class="sidebar"><div class="side-card"><div class="side-title">调研目录 / CONTENTS</div><nav class="side-nav" id="sideNav" aria-label="调研分类"></nav><hr class="side-rule"><div class="side-note">选择每个选项右侧的百分比即可，无需填写数量。<br><br>同一题组按100%分配，并在题目下方即时检查合计。<br><br>内容自动暂存于本机；一次保存包含 CSV、TXT、完整问卷页面 PDF、JSON。</div></div></aside>
+ <aside class="sidebar"><div class="side-card"><div class="side-title">调研目录 / CONTENTS</div><nav class="side-nav" id="sideNav" aria-label="调研分类"></nav><hr class="side-rule"><div class="side-note">选择每个选项右侧的百分比即可，无需填写数量。<br><br>同一题组按100%分配，并在题目下方即时检查合计。<br><br>填写内容会自动暂存于当前浏览器，仅保存在本机。</div></div></aside>
  <main>
   <div class="meta-card">
    <div class="field"><label for="respondent">填写人 / 业务同事</label><input id="respondent" data-meta="respondent" placeholder="例如：北美销售 A" autocomplete="name"></div>
@@ -128,7 +128,6 @@
   </div>
   <p class="intro"><b>填写说明：</b>每个产品选项右侧直接下拉选择百分比（0%、1%、2%……100%）；同一题组分配合计应为100%，底部会显示差额和最高占比项。<b>这些占比由业务同事提供，不会自动被当作真实市场统计。</b>请注明依据（CRM、成交记录或业务经验）。不同选项同时涉及一个客户时，请按需求出现次数估算份额，而不是将其称为客户覆盖率。</p>
   <div id="questionnaire"></div>
-  <div class="foot-actions"><h3>保存调研结果</h3><p>点击保存按钮后选择桌面或其他文件夹，生成完整的问卷资料。<b>04_调研报告.pdf</b> 将按照本问卷的页面结构、选项卡片、占比、填空及补充说明生成完整的 PDF 版，而不是仅导出文字摘要。</p><div class="action-row"><button class="btn primary" id="saveDesktop" type="button">▣ 保存调研结果（生成汇总文件夹）</button></div><div id="saveFeedback" class="save-feedback" role="status" aria-live="polite"></div><div class="footnote">隐私提示：这是可离线打开的静态 HTML 文件，不会自动提交给任何服务器。导出文件请按公司内部数据规范保存和共享。</div></div>
  </main>
 </div>
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
@@ -186,7 +185,7 @@ function restore(data){if(!data)return;for(const [n,v] of Object.entries(data.me
 function hasAnswer(qId){const q=byId('q'+niceId(qId));return [...q.querySelectorAll('input,textarea,select')].some(e=>{if(e.name.endsWith('__source')||e.name.endsWith('__note')||e.name.includes('currency'))return false;if(e.name.includes('__pct_'))return e.value!==''&&Number(e.value)>0;if(e.type==='checkbox'||e.type==='radio')return e.checked;return !!e.value.trim();});}
 function setOthers(){document.querySelectorAll('[data-other-target]').forEach(el=>{const target=el.dataset.otherTarget;const wrap=document.querySelector(`[data-group="${CSS.escape(target)}"]`);const trigger=[...(wrap?.querySelectorAll('.option-percent')||[])].some(o=>o.querySelector('.option-title')?.textContent==='其他' && Number(o.querySelector('.pct-select')?.value)>0);el.classList.toggle('show',trigger);});}
 function updateProgress(){let n=0;for(const q of QUESTIONS){const answered=hasAnswer(q.id);if(answered)n++;byId('q'+niceId(q.id)).classList.toggle('done',answered);byId('state'+q.id).textContent=answered?'已填写':'未填写';}updateOptionShares();const perc=Math.round(n/QUESTIONS.length*100);byId('totalCompleted').textContent=n;byId('totalPercent').textContent=perc+'%';byId('progressFill').style.width=perc+'%';byId('progressTrack').setAttribute('aria-valuenow',String(n));for(const s of SECTIONS)byId('navCount'+s.id).textContent=QUESTIONS.filter(q=>q.section===s.id&&hasAnswer(q.id)).length+' / '+QUESTIONS.filter(q=>q.section===s.id).length;setOthers();}
-function save(){try{localStorage.setItem(SAVE_KEY,JSON.stringify(getData()));byId('saveStatus').textContent='已自动保存在此浏览器（仅本机）；建议最终导出 CSV。';}catch(e){byId('saveStatus').textContent='当前浏览器无法自动保存，请及时导出 CSV 或 JSON。';}updateProgress();}
+function save(){try{localStorage.setItem(SAVE_KEY,JSON.stringify(getData()));byId('saveStatus').textContent='已自动暂存于当前浏览器，仅保存在本机。';}catch(e){byId('saveStatus').textContent='当前浏览器无法自动暂存，请保持页面打开并联系问卷负责人。';}updateProgress();}
 function toast(msg){let el=byId('toast');el.textContent=msg;el.classList.add('show');clearTimeout(window.toastTimer);window.toastTimer=setTimeout(()=>el.classList.remove('show'),2500);}
 function download(name,contents,mime){const blob=new Blob([contents],{type:mime});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download=name;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),3000);}
 function baseName(){const date=(new Date()).toISOString().slice(0,10);const who=(byId('respondent').value||'业务填写').replace(/[\\/:*?"<>|\s]+/g,'_').slice(0,25);return 'GEORGE_北美石材市场调研_20题_'+who+'_'+date;}
@@ -504,7 +503,6 @@ if(!byId('dateFilled').value)byId('dateFilled').value=new Date().toLocaleDateStr
 updateProgress();
 document.addEventListener('change',e=>{if(e.target.closest('#questionnaire')||e.target.matches('[data-meta]'))save();});
 document.addEventListener('input',e=>{if(e.target.closest('#questionnaire')||e.target.matches('[data-meta]'))save();});
-byId('saveDesktop').addEventListener('click',saveDesktopBundle);byId('exportTop').addEventListener('click',saveDesktopBundle);
 </script>
 </body>
 </html>
