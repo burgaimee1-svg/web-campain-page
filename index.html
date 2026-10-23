@@ -128,7 +128,7 @@
   </div>
   <p class="intro"><b>填写说明：</b>每个产品选项右侧直接下拉选择百分比（0%、1%、2%……100%）；同一题组分配合计应为100%，底部会显示差额和最高占比项。<b>这些占比由业务同事提供，不会自动被当作真实市场统计。</b>请注明依据（CRM、成交记录或业务经验）。不同选项同时涉及一个客户时，请按需求出现次数估算份额，而不是将其称为客户覆盖率。</p>
   <div id="questionnaire"></div>
-  <div class="foot-actions"><h3>保存调研结果</h3><p>点击按钮后，页面会把当前完整填写内容生成 HTML，并直接保存到公开 GitHub 仓库。再次保存会更新该同事原有的结果文件。</p><div class="action-row"><button class="btn primary" id="submitGithub" type="button">保存调研结果</button></div><div id="submitFeedback" class="save-feedback" role="status" aria-live="polite"></div><div class="footnote">无需登录 GitHub。请只使用分配给自己的专属链接，提交结果将公开保存。</div></div>
+  <div class="foot-actions"><h3>保存调研结果</h3><p>优先直接保存到公开 GitHub 仓库；如果当前网络无法提交，也可以下载一份包含全部填写内容的 HTML 文件，再通过微信、邮件或网盘发送给问卷负责人。</p><div class="action-row"><button class="btn primary" id="submitGithub" type="button">保存调研结果</button><button class="btn" id="downloadHtml" type="button">下载已填写 HTML</button></div><div id="submitFeedback" class="save-feedback" role="status" aria-live="polite"></div><div class="footnote">无需登录 GitHub。请只使用分配给自己的专属链接；直接提交的结果将公开保存，下载的 HTML 文件由填写人自行发送。</div></div>
  </main>
 </div>
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
@@ -192,6 +192,15 @@ function toast(msg){let el=byId('toast');el.textContent=msg;el.classList.add('sh
 function download(name,contents,mime){const blob=new Blob([contents],{type:mime});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download=name;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),3000);}
 function baseName(){const date=(new Date()).toISOString().slice(0,10);const who=(byId('respondent').value||'业务填写').replace(/[\\/:*?"<>|\s]+/g,'_').slice(0,25);return 'GEORGE_北美石材市场调研_20题_'+who+'_'+date;}
 function buildFilledHtml(){const clone=document.documentElement.cloneNode(true);const payload=clone.querySelector('#embeddedSurveyData');payload.textContent=JSON.stringify(getData()).replaceAll('<','\\u003c');return '<!DOCTYPE html>\n'+clone.outerHTML;}
+function downloadFilledHtml(){
+ const feedback=byId('submitFeedback'),respondent=byId('respondent').value.trim();
+ if(!respondent){feedback.textContent='请先填写“填写人 / 业务同事”。';feedback.classList.add('error');byId('respondent').focus();return;}
+ feedback.classList.remove('error');
+ const fileName=baseName()+'.html';
+ download(fileName,buildFilledHtml(),'text/html;charset=utf-8');
+ feedback.textContent=`✓ 已下载 ${fileName}，请将此文件发送给问卷负责人。`;
+ toast('已下载包含完整答案的 HTML');
+}
 async function submitViaGithub(){
  const btn=byId('submitGithub'),feedback=byId('submitFeedback'),respondent=byId('respondent').value.trim();
  if(!respondent){feedback.textContent='请先填写“填写人 / 业务同事”。';feedback.classList.add('error');byId('respondent').focus();return;}
@@ -523,6 +532,7 @@ updateProgress();
 document.addEventListener('change',e=>{if(e.target.closest('#questionnaire')||e.target.matches('[data-meta]'))save();});
 document.addEventListener('input',e=>{if(e.target.closest('#questionnaire')||e.target.matches('[data-meta]'))save();});
 byId('submitGithub').addEventListener('click',submitViaGithub);
+byId('downloadHtml').addEventListener('click',downloadFilledHtml);
 </script>
 </body>
 </html>
